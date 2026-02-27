@@ -6,93 +6,105 @@
 * { margin:0; padding:0; box-sizing:border-box; }
 html, body { height:100%; }
 body { font-family: Arial, sans-serif; font-size: 11px; background:#fff; display:flex; justify-content:center; padding:20px; min-height:100vh; }
-
-.page {
-  width: 750px;
-  display: flex;
-  flex-direction: column;
-  min-height: calc(100vh - 40px);
-}
-
-/* ===== BLOQUES GENERALES ===== */
+.page { width: 750px; display: flex; flex-direction: column; min-height: calc(100vh - 40px); }
 .bloque { border: 1px solid #555; margin-bottom: 6px; flex-shrink: 0; }
-
-/* ===== HEADER ===== */
 .header { display:flex; align-items:stretch; padding:12px; gap:10px; }
 .header-logo { width:110px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
 .header-logo img { width:90px; }
 .header-center { flex:1; padding-left:10px; }
 .header-center .doc-label { font-weight:bold; font-size:11px; }
-.header-center .company { font-size:13px; font-weight:bold; margin:2px 0 6px; }
+.header-center .company { font-size:11px;  margin:2px 0 6px; }
 .header-center .info { font-size:10px; line-height:1.7; }
 .header-right { width:220px; flex-shrink:0; font-size:10px; line-height:1.8; padding-left:14px; }
 .header-right .doc-tipo { font-weight:bold; font-size:11px; }
 .header-right .doc-num { font-size:11px; }
-
-/* ===== RECEPTOR ===== */
-.receptor {
-  padding: 8px 12px;
-  font-size: 10px;
-  line-height: 1.85;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
-}
-.receptor .col-left  { grid-column: 1; }
+.receptor { padding: 8px 12px; font-size: 10px; line-height: 1.85; display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+.receptor .col-left { grid-column: 1; }
 .receptor .col-right { grid-column: 2; }
 .receptor b { font-weight: bold; }
 
-/* ===== TABLA: bloque flex column que crece ===== */
+/* ===== TABLA ===== */
 .tabla-bloque {
-  border: 1px solid #555;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+    border: 1px solid #555;
+    flex: 1;
+    overflow: hidden;
 }
 
-/* La table normal — NO flex — para que las columnas funcionen bien */
 .tabla-bloque table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 10px;
-  table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+    table-layout: fixed;
+    height: 100%;
 }
 
-thead tr:first-child th { background:#d9d9d9; font-weight:bold; text-align:center; border:1px solid #999; padding:4px 3px; }
-thead tr:last-child th  { background:#d9d9d9; font-weight:bold; text-align:center; border:1px solid #999; padding:3px; font-size:9px; }
-tbody td { border:1px solid #bbb; padding:4px 3px; vertical-align:top; }
+/* Anchos de columna */
+col.c-cod  { width: 42px; }
+col.c-desc { width: auto; }
+col.c-uni  { width: 52px; }
+col.c-cant { width: 52px; }
+col.c-pu   { width: 68px; }
+col.c-desc2{ width: 40px; }
+col.c-ex   { width: 60px; }
+col.c-5    { width: 48px; }
+col.c-10   { width: 62px; }
 
-/* Área vacía entre datos y footer — crece para llenar espacio */
-.area-vacia {
-  flex: 1;
-  border-left: 1px solid #bbb;
-  border-right: 1px solid #bbb;
-  min-height: 40px;
+.c-cod  { text-align:center; }
+.c-desc { text-align:left; }
+.c-uni  { text-align:center; }
+.c-cant { text-align:center; }
+.c-pu   { text-align:right; padding-right:4px; }
+.c-desc2{ text-align:center; }
+.c-ex   { text-align:right; padding-right:4px; }
+.c-5    { text-align:right; padding-right:4px; }
+.c-10   { text-align:right; padding-right:4px; }
+
+thead tr:first-child th {
+    background:#d9d9d9; font-weight:bold; text-align:center;
+    border:1px solid #999; padding:4px 3px;
+}
+thead tr:last-child th {
+    background:#d9d9d9; font-weight:bold; text-align:center;
+    border:1px solid #999; padding:3px; font-size:9px;
 }
 
-/* Footer de totales — tabla normal al fondo */
-.tabla-footer {
-  flex-shrink: 0;
+/* Filas de datos — sin border-bottom en la última fila */
+tbody.datos td {
+    border-right: 1px solid #bbb;
+    border-bottom: none;
+    padding: 4px 3px;
+    vertical-align: top;
 }
-.tabla-footer table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 10px;
-  table-layout: fixed;
-}
-.tabla-footer td { border:1px solid #bbb; padding:3px 4px; }
+tbody.datos td:last-child { border-right: none; }
+/* tbody.datos tr:last-child td { border-bottom: none; } */
 
-/* Anchos de columna — deben coincidir en thead y footer */
-.c-cod   { width:42px;  text-align:center; }
-.c-desc  { text-align:left; }
-.c-uni   { width:52px;  text-align:center; }
-.c-cant  { width:52px;  text-align:center; }
-.c-pu    { width:68px;  text-align:right; padding-right:4px; }
-.c-desc2 { width:40px;  text-align:center; }
-.c-ex    { width:60px;  text-align:right; padding-right:4px; }
-.c-5     { width:48px;  text-align:right; padding-right:4px; }
-.c-10    { width:62px;  text-align:right; padding-right:4px; }
+
+
+/* Fila de relleno */
+tbody.relleno { height: 100%; }
+tbody.relleno tr { height: 100%; }
+tbody.relleno td {
+    border-right: 1px solid #bbb;
+    border-bottom: none;
+    height: 100%;
+    padding: 0;
+    vertical-align: top;
+}
+tbody.relleno td:last-child { border-right: none; }
+
+/* Tfoot — sin border-top en primera fila para no duplicar línea */
+tfoot td {
+    border: 1px solid #bbb;
+    padding: 3px 4px;
+    font-size: 10px;
+}
+tfoot tr:first-child td { border-top: 1px solid #555; }
+tfoot tr.sub  td { background: #d9d9d9; }
+tfoot tr.guar td { background: #555; color: #fff; border-color: #555; }
+tfoot tr.iva  td { background: #fff; }
+tfoot tr.info td { background: #fff; }
+tfoot .fw { font-weight: bold; }
+tfoot .tr { text-align: right; }
 </style>
 </head>
 <body>
@@ -106,13 +118,12 @@ tbody td { border:1px solid #bbb; padding:4px 3px; vertical-align:top; }
       </div>
       <div class="header-center">
         <div class="doc-label">KuDE de Factura electrónica</div>
-        <div class="company">WILPAR S.A.</div>
+        <div class="company">{{ $nombre_empresa }}</div>
         <div class="info">
-          Actividades publicitarias<br>
-          AVDA BRASILIA CASI GAETANO MARTINO<br>
-          <br>
-          ASUNCION (DISTRITO)<br>
-          GENESIS@ATOMIK.PRO &nbsp; 0991707465
+         {{ $actividad_empresa }}<br>
+        {{ $direccion_empresa }}<br><br>
+        {{ $ciudad_empresa }}<br>
+        {{ $email_empresa }} &nbsp; {{ $telefono_empresa }}
         </div>
       </div>
       <div class="header-right">
@@ -120,7 +131,7 @@ tbody td { border:1px solid #bbb; padding:4px 3px; vertical-align:top; }
         <div><b>Timbrado N°:</b> {{ $num_timbrado }}</div>
         <div><b>Inicio de vigencia:</b> 30-10-2024</div>
         <div class="doc-tipo">Factura electrónica</div>
-        <div class="doc-num"><b>N°:</b> 001-001-{{ $num_factura }}</div>
+        <div class="doc-num"><b>N°:</b> {{ $num_factura }}</div>
       </div>
     </div>
   </div>
@@ -128,7 +139,7 @@ tbody td { border:1px solid #bbb; padding:4px 3px; vertical-align:top; }
   <!-- BLOQUE 2: RECEPTOR -->
   <div class="bloque">
     <div class="receptor">
-      <div class="col-left"><b>Fecha de emisión:</b> {{ $fecha_emision }} &nbsp;00:00:00</div>
+      <div class="col-left"><b>Fecha de emisión:</b> {{ $fecha_emision }}</div>
       <div class="col-right"><b>Condición de venta:</b> {{ $condicion_venta }}</div>
 
       <div class="col-left"><b>RUC/documento de identidad:</b> {{ $ruc_receptor }}</div>
@@ -151,22 +162,14 @@ tbody td { border:1px solid #bbb; padding:4px 3px; vertical-align:top; }
     </div>
   </div>
 
-  <!-- BLOQUE 3: TABLA -->
+  <!-- BLOQUE 3: TABLA — una sola table -->
   <div class="tabla-bloque">
-
-    <!-- Cabecera + filas de datos: tabla normal -->
     <table>
       <colgroup>
-        <col class="c-cod">
-        <col class="c-desc">
-        <col class="c-uni">
-        <col class="c-cant">
-        <col class="c-pu">
-        <col class="c-desc2">
-        <col class="c-ex">
-        <col class="c-5">
-        <col class="c-10">
+        <col class="c-cod"><col class="c-desc"><col class="c-uni"><col class="c-cant">
+        <col class="c-pu"><col class="c-desc2"><col class="c-ex"><col class="c-5"><col class="c-10">
       </colgroup>
+
       <thead>
         <tr>
           <th class="c-cod" rowspan="2">Código</th>
@@ -183,8 +186,10 @@ tbody td { border:1px solid #bbb; padding:4px 3px; vertical-align:top; }
           <th class="c-10">10%</th>
         </tr>
       </thead>
-      <tbody>
-        @foreach($items as $item)
+
+      <!-- Filas de datos -->
+      <tbody class="datos">
+        @foreach ($items as $item)
         <tr>
           <td class="c-cod">{{ $item['codigo'] }}</td>
           <td class="c-desc">{{ $item['descripcion'] }}</td>
@@ -198,54 +203,44 @@ tbody td { border:1px solid #bbb; padding:4px 3px; vertical-align:top; }
         </tr>
         @endforeach
       </tbody>
+
+      <!-- Fila relleno que se estira -->
+      <tbody class="relleno">
+        <tr>
+          <td class="c-cod"></td><td class="c-desc"></td><td class="c-uni"></td>
+          <td class="c-cant"></td><td class="c-pu"></td><td class="c-desc2"></td>
+          <td class="c-ex"></td><td class="c-5"></td><td class="c-10"></td>
+        </tr>
+      </tbody>
+
+      <tfoot>
+        <tr class="sub">
+          <td colspan="6" class="fw">SUBTOTAL</td>
+          <td class="tr">0</td>
+          <td class="tr">0</td>
+          <td class="tr">{{ $subtotal }}</td>
+        </tr>
+        <tr class="sub">
+          <td colspan="8" class="fw">TOTAL DE LA OPERACIÓN</td>
+          <td class="tr">{{ $total_operacion }}</td>
+        </tr>
+        <tr class="guar">
+          <td colspan="8" class="fw">TOTAL EN GUARANÍES</td>
+          <td class="tr">{{ $total_guaranies }}</td>
+        </tr>
+        <tr class="iva">
+          <td colspan="3" class="fw">LIQUIDACIÓN IVA</td>
+          <td colspan="2">(5%) &nbsp; {{ $iva_cinco }}</td>
+          <td colspan="2">(10%) &nbsp; {{ $iva_diez }}</td>
+          <td colspan="2" class="fw">TOTAL IVA: &nbsp; {{ $total_iva }}</td>
+        </tr>
+        <tr class="info">
+          <td colspan="9">Info fiscal</td>
+        </tr>
+      </tfoot>
+
     </table>
-
-    <!-- Espacio vacío que crece -->
-    <div class="area-vacia"></div>
-
-    <!-- Footer de totales: tabla separada con mismos anchos de col -->
-    <div class="tabla-footer">
-      <table>
-        <colgroup>
-          <col class="c-cod">
-          <col class="c-desc">
-          <col class="c-uni">
-          <col class="c-cant">
-          <col class="c-pu">
-          <col class="c-desc2">
-          <col class="c-ex">
-          <col class="c-5">
-          <col class="c-10">
-        </colgroup>
-        <tbody>
-          <tr style="background:#d9d9d9;">
-            <td colspan="6" style="font-weight:bold; border:1px solid #bbb; padding:3px 4px;">SUBTOTAL</td>
-            <td style="text-align:right; border:1px solid #bbb; padding:3px 4px;">0</td>
-            <td style="text-align:right; border:1px solid #bbb; padding:3px 4px;">0</td>
-            <td style="text-align:right; border:1px solid #bbb; padding:3px 4px;">{{ $subtotal }}</td>
-          </tr>
-          <tr style="background:#d9d9d9;">
-            <td colspan="8" style="font-weight:bold; border:1px solid #bbb; padding:3px 4px;">TOTAL DE LA OPERACIÓN</td>
-            <td style="text-align:right; border:1px solid #bbb; padding:3px 4px;">{{ $total_operacion }}</td>
-          </tr>
-          <tr style="background:#555; color:#fff;">
-            <td colspan="8" style="font-weight:bold; border:1px solid #555; padding:3px 4px;">TOTAL EN GUARANÍES</td>
-            <td style="text-align:right; border:1px solid #555; padding:3px 4px;">{{ $total_guaranies }}</td>
-          </tr>
-          <tr>
-            <td colspan="3" style="font-weight:bold; border:1px solid #bbb; padding:3px 4px;">LIQUIDACIÓN IVA</td>
-            <td colspan="2" style="border:1px solid #bbb; padding:3px 4px;">(5%) &nbsp; {{ $iva_cinco }}</td>
-            <td colspan="2" style="border:1px solid #bbb; padding:3px 4px;">(10%) &nbsp; {{ $iva_diez }}</td>
-            <td colspan="2" style="border:1px solid #bbb; padding:3px 4px; font-weight:bold;">TOTAL IVA: &nbsp; {{ $total_iva }}</td>
-          </tr>
-          <tr>
-            <td colspan="9" style="border:1px solid #bbb; padding:3px 4px;">Info fiscal</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-  </div><!-- fin tabla-bloque -->
+  </div>
 
 </div>
 </body>
