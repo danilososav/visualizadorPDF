@@ -87,22 +87,9 @@
         }
 
         /* ===== BLOQUE 2: RECEPTOR ===== */
-        .receptor {
-            padding: 10px 12px;
-            font-size: 10px;
-            line-height: 1.9;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0 30px;
-        }
-
-        .receptor .full {
-            grid-column: 1/-1;
-        }
-
-        .receptor b {
-            font-weight: bold;
-        }
+        .receptor { padding:10px 12px; font-size:10px; line-height:1.9; display:grid; grid-template-columns:1fr 1fr; gap:0 30px; }
+        .receptor .full { grid-column:1/-1; }
+        .receptor b { font-weight:bold; }
 
         /* ===== BLOQUE 3: TABLA ===== */
         .tabla-bloque {
@@ -224,6 +211,7 @@
             </div>
         </div>
 
+
         <!-- BLOQUE 2: RECEPTOR -->
         <div class="bloque">
             <div class="receptor">
@@ -246,7 +234,7 @@
         <!-- BLOQUE 3: TABLA -->
         <div class="tabla-bloque">
             <table>
-                <thead>
+                <thead>f
                     <tr>
                         <th class="c-cod" rowspan="2">Código</th>
                         <th class="c-desc" rowspan="2">Descripción</th>
