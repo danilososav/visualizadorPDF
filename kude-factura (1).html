@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: Arial, sans-serif; font-size: 11px; background:#fff; display:flex; justify-content:center; padding:20px; }
+.page { width: 750px; }
+
+/* ===== BLOQUE 1: HEADER ===== */
+.bloque { border: 1px solid #555; margin-bottom: 6px; }
+
+.header { display:flex; align-items:stretch; padding:12px; gap:10px; }
+.header-logo { width:110px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+.header-logo img { width:90px; }
+.logo-placeholder { width:90px; height:45px; border:2px solid #e05; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:bold; color:#e05; gap:4px; }
+.header-center { flex:1; padding-left:10px; }
+.header-center .doc-label { font-weight:bold; font-size:11px; }
+.header-center .company { font-size:13px; font-weight:bold; margin:2px 0 6px; }
+.header-center .info { font-size:10px; line-height:1.7; }
+.header-right { width:220px; flex-shrink:0; font-size:10px; line-height:1.8; padding-left:14px; border-left:1px solid #ccc; }
+.header-right .doc-tipo { font-weight:bold; font-size:11px; }
+.header-right .doc-num { font-size:11px; }
+
+/* ===== BLOQUE 2: RECEPTOR ===== */
+.receptor { padding:10px 12px; font-size:10px; line-height:1.9; display:grid; grid-template-columns:1fr 1fr; gap:0 30px; }
+.receptor .full { grid-column:1/-1; }
+.receptor b { font-weight:bold; }
+
+/* ===== BLOQUE 3: TABLA ===== */
+.tabla-bloque { border:1px solid #555; margin-bottom:6px; }
+table { width:100%; border-collapse:collapse; font-size:10px; }
+thead tr:first-child th { background:#d9d9d9; font-weight:bold; text-align:center; border:1px solid #999; padding:4px 3px; }
+thead tr:last-child th { background:#d9d9d9; font-weight:bold; text-align:center; border:1px solid #999; padding:3px; font-size:9px; }
+tbody td { border:1px solid #bbb; padding:4px 3px; vertical-align:top; }
+.tbody-area { min-height:280px; }
+
+/* Columnas */
+.c-cod   { width:42px; text-align:center; }
+.c-desc  { text-align:left; }
+.c-uni   { width:52px; text-align:center; }
+.c-cant  { width:52px; text-align:center; }
+.c-pu    { width:68px; text-align:right; }
+.c-desc2 { width:40px; text-align:center; }
+.c-ex    { width:60px; text-align:right; }
+.c-5     { width:48px; text-align:right; }
+.c-10    { width:60px; text-align:right; }
+
+/* Subtotales al final de la tabla */
+.subtotales { border-top:1px solid #555; }
+.subtotales tr td { border:1px solid #bbb; padding:3px 4px; font-size:10px; }
+.sub-label { font-weight:bold; }
+.sub-right { text-align:right; }
+.total-row td { background:#d9d9d9; font-weight:bold; }
+.guaranies-row td { background:#555; color:#fff; font-weight:bold; }
+.iva-row td { background:#fff; }
+
+/* ===== BLOQUE 4: QR/CDC ===== */
+.cdc-bloque { border:1px solid #555; padding:12px; display:flex; gap:14px; align-items:flex-start; }
+.qr-box { width:110px; flex-shrink:0; }
+.qr-box img { width:110px; }
+.qr-placeholder { width:110px; height:110px; border:1px solid #999; display:flex; align-items:center; justify-content:center; font-size:10px; color:#aaa; background:#f9f9f9; }
+.cdc-text { flex:1; font-size:10px; line-height:1.6; }
+.cdc-text .url { color:#000; }
+.cdc-text .cdc-num { font-size:14px; font-weight:bold; letter-spacing:1px; margin:3px 0; }
+.cdc-text .rep { font-size:9px; color:#333; }
+.cdc-text .id { font-size:9px; margin-top:4px; }
+.page-num { text-align:right; font-size:9px; margin-top:4px; color:#555; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- BLOQUE 1: HEADER -->
+  <div class="bloque">
+    <div class="header">
+      <div class="header-logo">
+        <img src="C:\Users\Usuario\Desktop\visualizadorPDF\atomik.png">
+      </div>
+      <div class="header-center">
+        <div class="doc-label">KuDE de Factura electrónica</div>
+        <div class="company">WILPAR S.A.</div>
+        <div class="info">
+          Actividades publicitarias<br>
+          AVDA BRASILIA CASI GAETANO MARTINO<br>
+          <br>
+          ASUNCION (DISTRITO)<br>
+          GENESIS@ATOMIK.PRO &nbsp; 0991707465
+        </div>
+      </div>
+      <div class="header-right" style="border-left:none;">
+        <div><b>RUC:</b> 80114643-7</div>
+        <div><b>Timbrado N°:</b> 17593723</div>
+        <div><b>Inicio de vigencia:</b> 30-10-2024</div>
+        <div class="doc-tipo">Factura electrónica</div>
+        <div class="doc-num"><b>N°:</b> 001-001-0000718</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOQUE 2: RECEPTOR -->
+  <div class="bloque">
+    <div class="receptor">
+      <div><b>Fecha de emisión:</b> 12-11-2025 &nbsp;00:00:00</div>
+      <div><b>Condición de venta:</b> Crédito</div>
+      <div><b>RUC/documento de identidad:</b> 80022570-8</div>
+      <div><b>Cuotas:</b> 1</div>
+      <div><b>Código Cliente:</b> 000000000000669</div>
+      <div class="full" style="margin-top:2px;"><b>Moneda:</b> US Dollar</div>
+      <div class="full"><b>Nombre o razón social:</b> BANCO FAMILIAR SAECA</div>
+      <div style="margin-top:4px;"><b>Tipo de transacción:</b> Prestación de servicios</div>
+      <div style="margin-top:4px;"><b>Dirección:</b> CHILE 1080</div>
+      <div></div>
+      <div><b>Correo electrónico:</b> arnaldo.castro@familiar.com.py</div>
+      <div></div>
+      <div><b>Tipo de cambio:</b> 7060 .17</div>
+    </div>
+  </div>
+
+  <!-- BLOQUE 3: TABLA -->
+  <div class="tabla-bloque">
+    <table>
+      <thead>
+        <tr>
+          <th class="c-cod" rowspan="2">Código</th>
+          <th class="c-desc" rowspan="2">Descripción</th>
+          <th class="c-uni" rowspan="2">Unidad</th>
+          <th class="c-cant" rowspan="2">Cantidad</th>
+          <th class="c-pu" rowspan="2">Precio<br>Unitario</th>
+          <th class="c-desc2" rowspan="2">Desc.</th>
+          <th colspan="3">Valor de Venta</th>
+        </tr>
+        <tr>
+          <th class="c-ex">Exentas</th>
+          <th class="c-5">5%</th>
+          <th class="c-10">10%</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="c-cod">1</td>
+          <td class="c-desc">Plataforma Publicidad, Banco Familiar, TC Beneficios - Consumo Noviembre, Rich Media Plus, Inicio: 1/11/2025 al 30/11/2025,</td>
+          <td class="c-uni">UNI</td>
+          <td class="c-cant">1</td>
+          <td class="c-pu">2 .640</td>
+          <td class="c-desc2">0</td>
+          <td class="c-ex">0</td>
+          <td class="c-5">0</td>
+          <td class="c-10">2 .640,00</td>
+        </tr>
+        <!-- Filas vacías para simular el espacio en blanco del original -->
+        <tr><td colspan="9" style="height:220px; border:none; border-left:1px solid #bbb; border-right:1px solid #bbb;"></td></tr>
+      </tbody>
+      <!-- Subtotales dentro de la tabla -->
+      <tfoot>
+        <tr>
+          <td colspan="6" class="sub-label" style="border:1px solid #bbb; padding:3px 4px; background:#d9d9d9;">SUBTOTAL</td>
+          <td class="sub-right" style="border:1px solid #bbb; padding:3px 4px; background:#d9d9d9;">0</td>
+          <td class="sub-right" style="border:1px solid #bbb; padding:3px 4px; background:#d9d9d9;">0</td>
+          <td class="sub-right" style="border:1px solid #bbb; padding:3px 4px; background:#d9d9d9;">2 .640</td>
+        </tr>
+        <tr>
+          <td colspan="8" class="sub-label" style="border:1px solid #bbb; padding:3px 4px; background:#d9d9d9;">TOTAL DE LA OPERACIÓN</td>
+          <td class="sub-right" style="border:1px solid #bbb; padding:3px 4px; background:#d9d9d9;">2 .640</td>
+        </tr>
+        <tr>
+          <td colspan="8" class="sub-label" style="border:1px solid #555; padding:3px 4px; background:#555; color:#fff;">TOTAL EN GUARANÍES</td>
+          <td class="sub-right" style="border:1px solid #555; padding:3px 4px; background:#555; color:#fff;">18 .638 .849</td>
+        </tr>
+        <tr>
+          <td colspan="3" style="border:1px solid #bbb; padding:3px 4px; font-weight:bold;">LIQUIDACIÓN IVA</td>
+          <td colspan="2" style="border:1px solid #bbb; padding:3px 4px;">(5%) &nbsp; 0</td>
+          <td colspan="2" style="border:1px solid #bbb; padding:3px 4px;">(10%) &nbsp; 240</td>
+          <td colspan="2" style="border:1px solid #bbb; padding:3px 4px; font-weight:bold;">TOTAL IVA: &nbsp; 240</td>
+        </tr>
+        <tr>
+          <td colspan="9" style="border:1px solid #bbb; padding:3px 4px;">Info fiscal</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+
+
+</div>
+</body>
+</html>
