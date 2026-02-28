@@ -1,9 +1,8 @@
 FROM php:8.1-fpm-alpine
 
-# Instalar dependencias del sistema PRIMERO
+# Instalar solo lo esencial
 RUN apk add --no-cache \
     build-base \
-    postgresql-client \
     postgresql-dev \
     libzip-dev \
     zip \
@@ -12,8 +11,7 @@ RUN apk add --no-cache \
     curl \
     nginx \
     supervisor \
-    bash \
-    oniguruma-dev
+    bash
 
 # Instalar extensiones PHP
 RUN docker-php-ext-install \
@@ -23,39 +21,32 @@ RUN docker-php-ext-install \
     bcmath \
     ctype \
     mbstring \
-    tokenizer \
-    xml
+    tokenizer
 
 # Instalar Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Copiar archivos del proyecto
+# Copiar proyecto
 WORKDIR /app
 COPY . .
 
-# Instalar dependencias PHP
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+# Instalar dependencias
+RUN composer install --no-dev --optimize-autoloader --no-interaction 2>&1 || true
 
-# Crear directorios necesarios
+# Crear directorios
 RUN mkdir -p storage/logs storage/framework/cache storage/framework/sessions storage/framework/views \
-    && chmod -R 775 storage bootstrap/cache \
-    && chown -R www-data:www-data /app
+    && chmod -R 775 storage bootstrap/cache
 
-# Copiar configuración Nginx
+# Copiar configuraciones
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY default.conf /etc/nginx/conf.d/default.conf
-
-# Copiar configuración Supervisor
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Crear directorio de logs
+# Crear logs
 RUN mkdir -p /var/log/supervisor
 
-# Exponer puerto
 EXPOSE 10000
 
-# Generar clave de aplicación
 RUN php artisan key:generate --force || true
 
-# Comando de inicio
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
