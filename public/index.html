@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualizador PDF - Facturas</title>
+    <title>TEXO|FACTURAS</title>
     <style>
         * {
             margin: 0;
@@ -11,253 +11,740 @@
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary-color: #64748b;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --bg-light: #f8fafc;
+            --bg-white: #ffffff;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --border-color: #e2e8f0;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
 
-        .container {
+        [data-theme="dark"] {
+            --bg-light: #0f172a;
+            --bg-white: #1e293b;
+            --text-dark: #f1f5f9;
+            --text-light: #cbd5e1;
+            --border-color: #334155;
+        }
+
+        html, body {
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER */
+        .header {
+            background-color: var(--bg-white);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
             max-width: 1200px;
             margin: 0 auto;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
         }
 
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
+        .logo {
+    width: 90px;  /* Más grande */
+    height: 90px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 4px;
+}
+
+        .app-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
         }
 
-        .header p {
-            font-size: 1.1em;
-            opacity: 0.9;
+        .theme-toggle {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: background-color 0.3s;
         }
 
-        .content {
-            padding: 30px;
+        .theme-toggle:hover {
+            background-color: var(--bg-light);
+        }
+
+        /* MAIN CONTENT */
+        .container {
+            flex: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 2rem 1rem;
         }
 
         .search-section {
+            background-color: var(--bg-white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .search-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+        }
+
+        .search-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr auto;
-            gap: 15px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
         }
 
         .form-group {
             display: flex;
             flex-direction: column;
+            gap: 0.5rem;
         }
 
-        .form-group label {
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: #333;
+        .form-label {
+            font-weight: 500;
+            color: var(--text-dark);
+            font-size: 0.95rem;
         }
 
-        .form-group input,
-        .form-group select {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1em;
+        .form-input,
+        .form-select {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            background-color: var(--bg-white);
+            color: var(--text-dark);
+            transition: border-color 0.3s, box-shadow 0.3s;
         }
 
-        .form-group input:focus,
-        .form-group select:focus {
+        .form-input:focus,
+        .form-select:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
-        .btn-search {
-            align-self: flex-end;
-            padding: 10px 20px;
-            background: #667eea;
-            color: white;
+        .search-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
             cursor: pointer;
-            font-weight: 600;
-            transition: background 0.3s;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .btn-search:hover {
-            background: #764ba2;
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
         }
 
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #475569;
+        }
+
+        /* RESULTS */
         .results-section {
+            background-color: var(--bg-white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .table-responsive {
             overflow-x: auto;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
+            font-size: 0.95rem;
         }
 
-        table thead {
-            background: #f5f5f5;
+        thead {
+            background-color: var(--bg-light);
+            border-bottom: 2px solid var(--border-color);
         }
 
-        table th {
-            padding: 15px;
+        th {
+            padding: 1rem;
             text-align: left;
             font-weight: 600;
-            color: #333;
-            border-bottom: 2px solid #667eea;
+            color: var(--text-dark);
         }
 
-        table td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #eee;
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        table tbody tr:hover {
-            background: #f9f9f9;
+        tbody tr:hover {
+            background-color: var(--bg-light);
+            transition: background-color 0.3s;
         }
 
-        .btn-descargar {
-            padding: 8px 16px;
-            background: #667eea;
+        .btn-view {
+            background-color: var(--primary-color);
             color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
             text-decoration: none;
+            font-size: 0.9rem;
+            transition: background-color 0.3s;
             display: inline-block;
-            transition: background 0.3s;
         }
 
-        .btn-descargar:hover {
-            background: #764ba2;
+        .btn-view:hover {
+            background-color: var(--primary-dark);
         }
 
-        .loading {
-            text-align: center;
-            padding: 20px;
-            color: #667eea;
-            display: none;
-        }
-
-        .loading.active {
-            display: block;
-        }
-
+        /* ERROR & LOADING */
         .error {
-            background: #fee;
-            color: #c33;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
             display: none;
+            background-color: #fee2e2;
+            color: #991b1b;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--danger-color);
         }
 
         .error.active {
             display: block;
         }
 
-        .pagination {
-            display: flex;
-            justify-content: center;
-            gap: 5px;
-            margin-top: 20px;
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-light);
         }
 
-        .pagination button {
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            background: white;
-            cursor: pointer;
-            border-radius: 4px;
+        .loading.active {
+            display: block;
         }
 
-        .pagination button.active {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
+        .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--border-color);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         .no-results {
+            display: none;
             text-align: center;
-            padding: 40px;
-            color: #999;
+            padding: 3rem 1rem;
+            color: var(--text-light);
+        }
+
+        .no-results.active {
+            display: block;
+        }
+
+        /* PAGINATION */
+        .pagination {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            padding: 2rem 1rem;
+            flex-wrap: wrap;
+        }
+
+        .pagination button {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-white);
+            color: var(--text-dark);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .pagination button:hover {
+            background-color: var(--bg-light);
+        }
+
+        .pagination button.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 1rem 0;
+                gap: 1rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .search-section {
+                padding: 1.5rem;
+            }
+
+            .search-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-buttons {
+                justify-content: stretch;
+            }
+
+            .search-buttons .btn {
+                flex: 1;
+                justify-content: center;
+            }
+
+            table {
+                font-size: 0.85rem;
+            }
+
+            th, td {
+                padding: 0.75rem 0.5rem;
+            }
+
+            .btn-view {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .app-title {
+                font-size: 1.2rem;
+            }
+
+            .search-title {
+                font-size: 1.2rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>📄 Visualizador de Facturas PDF</h1>
-            <p>Busca, visualiza y descarga tus facturas en PDF</p>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-container">
+            <div class="header-brand">
+                <div class="logo" style="padding: 0; overflow: hidden;">
+                    <img src="/logo.png" alt="Logo" style="width: 100%; height: 100%; object-fit: contain; padding: 4px;">
+                </div>
+                <h1 class="app-title">Visualizador de Facturas</h1>
+            </div>
+            <button class="theme-toggle" id="themeToggle" title="Cambiar tema">🌙</button>
         </div>
+    </header>
 
-        <div class="content">
+    <!-- MAIN CONTENT -->
+    <main class="container">
+        <div class="search-section">
+            <h2 class="search-title">Buscar Facturas</h2>
+
             <div class="error" id="error"></div>
 
-            <div class="search-section">
+            <div class="search-grid">
                 <div class="form-group">
-                    <label for="agencia">Agencia:</label>
-                    <select id="agencia">
+                    <label for="agencia" class="form-label">Agencia:</label>
+                    <select id="agencia" class="form-select">
                         <option value="">-- Seleccionar --</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label for="buscar">Número de Factura:</label>
-                    <input type="text" id="buscar" placeholder="Ej: 10010000718">
+                    <label for="buscar" class="form-label">Número de Documento:</label>
+                    <input type="text" id="buscar" class="form-input" placeholder="Ej: 001-001-0000001">
                 </div>
 
                 <div class="form-group">
-                    <label for="tipo">Tipo:</label>
-                    <select id="tipo">
+                    <label for="tipo" class="form-label">Tipo:</label>
+                    <select id="tipo" class="form-select">
                         <option value="">-- Todos --</option>
-                        <option value="factura">Factura</option>
                     </select>
                 </div>
-
-                <button class="btn-search" onclick="buscar()">🔍 Buscar</button>
             </div>
 
-            <div class="loading" id="loading">
-                ⏳ Cargando facturas...
+            <div class="search-buttons">
+                <button class="btn btn-primary" onclick="buscar()">🔍 Buscar</button>
+                <button class="btn btn-secondary" onclick="limpiar()">🗑️ Limpiar</button>
             </div>
+        </div>
 
-            <div class="results-section">
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p style="margin-top: 1rem;">Cargando facturas...</p>
+        </div>
+
+        <div class="results-section">
+            <div class="table-responsive">
                 <table id="resultados" style="display: none;">
                     <thead>
                         <tr>
                             <th>Número</th>
                             <th>Agencia</th>
                             <th>Cliente</th>
+                            <th>Tipo</th>
                             <th>Fecha</th>
                             <th>Total</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
-                    <tbody id="tbody">
-                    </tbody>
+                    <tbody id="tbody"></tbody>
                 </table>
-
-                <div class="no-results" id="noResults" style="display: none;">
-                    No se encontraron facturas
-                </div>
             </div>
 
-            <div class="pagination" id="pagination"></div>
+            <div class="no-results" id="noResults">
+                <p>No se encontraron documentos</p>
+            </div>
         </div>
-    </div>
 
-    <script src="/js/app.js"></script>
+        <div class="pagination" id="pagination"></div>
+    </main>
+
+    <script>
+        const API_URL = '/api';
+        let currentPage = 1;
+
+        // TEMA OSCURO
+        const themeToggle = document.getElementById('themeToggle');
+        const htmlElement = document.documentElement;
+        const savedTheme = localStorage.getItem('theme') || 'light';
+
+        htmlElement.setAttribute('data-theme', savedTheme);
+        updateThemeIcon();
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            htmlElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon();
+        });
+
+        function updateThemeIcon() {
+            const theme = htmlElement.getAttribute('data-theme');
+            themeToggle.textContent = theme === 'light' ? '🌙' : '☀️';
+        }
+
+        // CARGAR AGENCIAS
+        document.addEventListener('DOMContentLoaded', async () => {
+            await cargarAgencias();
+        });
+
+        async function cargarAgencias() {
+            try {
+                const response = await fetch('/api/agencias');
+                const agencias = await response.json();
+
+                const select = document.getElementById('agencia');
+                agencias.forEach(agencia => {
+                    const option = document.createElement('option');
+                    option.value = agencia;
+                    option.textContent = agencia;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error cargando agencias:', error);
+            }
+        }
+
+        async function cargarTipos() {
+    try {
+        const response = await fetch('/api/tipos-documento');
+        const tipos = await response.json();
+
+        const select = document.getElementById('tipo');
+        tipos.forEach(tipo => {
+            const option = document.createElement('option');
+            option.value = tipo;
+            option.textContent = tipo;
+            select.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error cargando tipos:', error);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+    await cargarAgencias();
+    await cargarTipos();
+});
+
+        // BUSCAR FACTURAS
+        async function buscar(page = 1) {
+            const agencia = document.getElementById('agencia').value;
+            const numeroFactura = document.getElementById('buscar').value;
+            const tipo = document.getElementById('tipo').value;
+
+            if (!agencia && !numeroFactura) {
+                mostrarError('Por favor selecciona una agencia o ingresa un número de factura');
+                return;
+            }
+
+            currentPage = page;
+            mostrarLoading(true);
+            ocultarError();
+
+            try {
+                let url = `${API_URL}/facturas`;
+                const params = new URLSearchParams();
+
+                if (agencia) params.append('empresa', agencia);
+                if (numeroFactura) params.append('q', numeroFactura);
+                if (tipo) params.append('tipo', tipo);
+                params.append('page', page);
+
+                if (params.toString()) {
+                    url += '?' + params.toString();
+                }
+
+                const response = await fetch(url);
+                if (!response.ok) throw new Error('Error en la solicitud');
+
+                const data = await response.json();
+                mostrarResultados(data.data);
+                mostrarPaginacion(data);
+            } catch (error) {
+                mostrarError('Error al buscar facturas: ' + error.message);
+            } finally {
+                mostrarLoading(false);
+            }
+        }
+
+        function mostrarResultados(facturas) {
+            const tbody = document.getElementById('tbody');
+            const tabla = document.getElementById('resultados');
+            const noResults = document.getElementById('noResults');
+
+            tbody.innerHTML = '';
+
+            if (facturas.length === 0) {
+                tabla.style.display = 'none';
+                noResults.classList.add('active');
+                return;
+            }
+
+            tabla.style.display = 'table';
+            noResults.classList.remove('active');
+
+            facturas.forEach(factura => {
+                const fecha = new Date(factura.fecha_emision).toLocaleDateString('es-PY');
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>${factura.numero}</td>
+                    <td>${factura.empresa.nombre}</td>
+                    <td>${factura.cliente.nombre}</td>
+                    <td>${factura.tipo_documento}</td>
+                    <td>${fecha}</td>
+                    <td>${factura.moneda === 'PYG' ? parseFloat(factura.total).toLocaleString('es-PY') + ' PYG' : parseFloat(factura.subtotal).toLocaleString('es-PY', {style: 'currency', currency: 'USD'})}</td>
+                    <td>
+                        <a href="/api/facturas/${factura.id}" class="btn-view" target="_blank">
+                            👁️ Ver PDF
+                        </a>
+                    </td>
+                `;
+            });
+        }
+
+        function mostrarPaginacion(data) {
+    const pagination = document.getElementById('pagination');
+    pagination.innerHTML = '';
+
+    if (data.last_page <= 1) return;
+
+    const currentPage = data.current_page;
+    const lastPage = data.last_page;
+    const maxButtons = 5;
+
+    // Botón Anterior
+    const btnAnterior = document.createElement('button');
+    btnAnterior.textContent = '← Anterior';
+    btnAnterior.disabled = currentPage === 1;
+    btnAnterior.onclick = () => buscar(currentPage - 1);
+    btnAnterior.style.cursor = currentPage === 1 ? 'not-allowed' : 'pointer';
+    btnAnterior.style.opacity = currentPage === 1 ? '0.5' : '1';
+    pagination.appendChild(btnAnterior);
+
+    // Calcular rango de páginas
+    let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+    let endPage = Math.min(lastPage, startPage + maxButtons - 1);
+
+    if (endPage - startPage + 1 < maxButtons) {
+        startPage = Math.max(1, endPage - maxButtons + 1);
+    }
+
+    // Botón "Primera página" si es necesario
+    if (startPage > 1) {
+        const btnPrimera = document.createElement('button');
+        btnPrimera.textContent = '1';
+        btnPrimera.onclick = () => buscar(1);
+        pagination.appendChild(btnPrimera);
+
+        if (startPage > 2) {
+            const btnPuntos = document.createElement('button');
+            btnPuntos.textContent = '...';
+            btnPuntos.disabled = true;
+            btnPuntos.style.cursor = 'default';
+            pagination.appendChild(btnPuntos);
+        }
+    }
+
+    // Botones de páginas
+    for (let i = startPage; i <= endPage; i++) {
+        const btn = document.createElement('button');
+        btn.textContent = i;
+        btn.onclick = () => buscar(i);
+        if (i === currentPage) btn.classList.add('active');
+        pagination.appendChild(btn);
+    }
+
+    // Botón "Última página" si es necesario
+    if (endPage < lastPage) {
+        if (endPage < lastPage - 1) {
+            const btnPuntos = document.createElement('button');
+            btnPuntos.textContent = '...';
+            btnPuntos.disabled = true;
+            btnPuntos.style.cursor = 'default';
+            pagination.appendChild(btnPuntos);
+        }
+
+        const btnUltima = document.createElement('button');
+        btnUltima.textContent = lastPage;
+        btnUltima.onclick = () => buscar(lastPage);
+        pagination.appendChild(btnUltima);
+    }
+
+    // Botón Siguiente
+    const btnSiguiente = document.createElement('button');
+    btnSiguiente.textContent = 'Siguiente →';
+    btnSiguiente.disabled = currentPage === lastPage;
+    btnSiguiente.onclick = () => buscar(currentPage + 1);
+    btnSiguiente.style.cursor = currentPage === lastPage ? 'not-allowed' : 'pointer';
+    btnSiguiente.style.opacity = currentPage === lastPage ? '0.5' : '1';
+    pagination.appendChild(btnSiguiente);
+}
+
+        function mostrarLoading(show) {
+            document.getElementById('loading').classList.toggle('active', show);
+        }
+
+        function mostrarError(mensaje) {
+            const error = document.getElementById('error');
+            error.textContent = mensaje;
+            error.classList.add('active');
+        }
+
+        function ocultarError() {
+            document.getElementById('error').classList.remove('active');
+        }
+
+        function limpiar() {
+            document.getElementById('agencia').value = '';
+            document.getElementById('buscar').value = '';
+            document.getElementById('tbody').innerHTML = '';
+            document.getElementById('resultados').style.display = 'none';
+            document.getElementById('noResults').classList.remove('active');
+            document.getElementById('pagination').innerHTML = '';
+            ocultarError();
+        }
+
+        // Enter en el input de búsqueda
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('buscar').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') buscar();
+            });
+        });
+    </script>
 </body>
 </html>

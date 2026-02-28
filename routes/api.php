@@ -21,3 +21,4 @@ Route::get('/clientes', [ClienteController::class, 'index']);
 Route::get('/clientes/{id}', [ClienteController::class, 'show']);
 
 Route::get('/agencias', [FacturaController::class, 'agencias']);
+Route::get('/tipos-documento', [FacturaController::class, 'tiposDocumento']);

@@ -14,6 +14,7 @@ class FacturaController extends Controller
 {
     $empresa = $request->query('empresa');
     $search = $request->query('q');
+    $tipo = $request->query('tipo');
 
     $query = Factura::with(['empresa', 'cliente', 'items']);
 
@@ -30,6 +31,10 @@ class FacturaController extends Controller
                   $subQ->where('nombre', 'ilike', "%$search%");
               });
         });
+    }
+
+    if ($tipo) {
+        $query->where('tipo_documento', 'ilike', "%$tipo%");
     }
 
     return response()->json($query->paginate(10));
@@ -50,6 +55,15 @@ class FacturaController extends Controller
 {
     $agencias = Empresa::orderBy('nombre')->pluck('nombre');
     return response()->json($agencias);
+}
+
+public function tiposDocumento()
+{
+    $tipos = Factura::distinct()
+        ->orderBy('tipo_documento')
+        ->pluck('tipo_documento');
+
+    return response()->json($tipos);
 }
 
     public function generarPdf($id)
