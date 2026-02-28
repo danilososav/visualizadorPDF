@@ -1,8 +1,9 @@
 FROM php:8.1-fpm-alpine
 
-# Instalar dependencias del sistema
+# Instalar dependencias del sistema PRIMERO
 RUN apk add --no-cache \
     build-base \
+    postgresql-client \
     postgresql-dev \
     libzip-dev \
     zip \
@@ -11,7 +12,8 @@ RUN apk add --no-cache \
     curl \
     nginx \
     supervisor \
-    bash
+    bash \
+    oniguruma-dev
 
 # Instalar extensiones PHP
 RUN docker-php-ext-install \
@@ -20,21 +22,19 @@ RUN docker-php-ext-install \
     zip \
     bcmath \
     ctype \
-    fileinfo \
-    json \
     mbstring \
     tokenizer \
     xml
 
 # Instalar Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 # Copiar archivos del proyecto
 WORKDIR /app
 COPY . .
 
 # Instalar dependencias PHP
-RUN composer install --no-dev --optimize-autoloader
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # Crear directorios necesarios
 RUN mkdir -p storage/logs storage/framework/cache storage/framework/sessions storage/framework/views \
