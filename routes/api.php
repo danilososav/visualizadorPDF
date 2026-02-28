@@ -19,3 +19,5 @@ Route::get('/facturas/{id}/descargar-pdf', [FacturaController::class, 'generarPd
 
 Route::get('/clientes', [ClienteController::class, 'index']);
 Route::get('/clientes/{id}', [ClienteController::class, 'show']);
+
+Route::get('/agencias', [FacturaController::class, 'agencias']);

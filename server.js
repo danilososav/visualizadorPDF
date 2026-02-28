@@ -3,7 +3,7 @@ import puppeteer from 'puppeteer';
 
 const app = express();
 
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
 
 app.post('/generar-pdf', async (req, res) => {
     try {
@@ -11,15 +11,19 @@ app.post('/generar-pdf', async (req, res) => {
 
         const browser = await puppeteer.launch({
             headless: true,
-            args: ['--no-sandbox']
+            args: ['--no-sandbox', '--disable-setuid-sandbox']
         });
 
         const page = await browser.newPage();
-        await page.setContent(html, { waitUntil: 'networkidle0' });
+        await page.setContent(html, {
+            waitUntil: 'domcontentloaded',
+            timeout: 60000
+        });
 
         const pdfBuffer = await page.pdf({
             format: 'A4',
-            margin: { top: '0.5cm', bottom: '0.5cm', left: '0.5cm', right: '0.5cm' }
+            margin: { top: '0.5cm', bottom: '0.5cm', left: '0.5cm', right: '0.5cm' },
+            printBackground: true
         });
 
         await browser.close();

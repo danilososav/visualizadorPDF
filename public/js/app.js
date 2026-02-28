@@ -3,25 +3,25 @@
 
     // Cargar agencias al iniciar
     document.addEventListener('DOMContentLoaded', async () => {
-        await cargarAgencias();
-    });
+    await cargarAgencias();
+});
 
     async function cargarAgencias() {
-        try {
-            const response = await fetch(`${API_URL}/agencias`);
-            const agencias = await response.json();
+    try {
+        const response = await fetch('/api/agencias');
+        const agencias = await response.json();
 
-            const select = document.getElementById('agencia');
-            agencias.forEach(agencia => {
-                const option = document.createElement('option');
-                option.value = agencia;
-                option.textContent = agencia;
-                select.appendChild(option);
-            });
-        } catch (error) {
-            console.error('Error cargando agencias:', error);
-        }
+        const select = document.getElementById('agencia');
+        agencias.forEach(agencia => {
+            const option = document.createElement('option');
+            option.value = agencia;
+            option.textContent = agencia;
+            select.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error cargando agencias:', error);
     }
+}
 
     async function buscar(page = 1) {
         const agencia = document.getElementById('agencia').value;
@@ -88,8 +88,8 @@
                 <td>${fecha}</td>
                 <td>${parseFloat(factura.total).toLocaleString('es-PY', {style: 'currency', currency: 'USD'})}</td>
                 <td>
-                    <a href="/api/facturas/${factura.id}/descargar-pdf" class="btn-descargar" target="_blank">
-                        📥 Descargar PDF
+                    <a href="/api/facturas/${factura.id}" class="btn-descargar" target="_blank">
+                        👁️ Ver PDF
                     </a>
                 </td>
             `;

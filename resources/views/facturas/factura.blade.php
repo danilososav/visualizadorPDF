@@ -105,45 +105,59 @@ tfoot tr.iva  td { background: #fff; }
 tfoot tr.info td { background: #fff; }
 tfoot .fw { font-weight: bold; }
 tfoot .tr { text-align: right; }
+
+@media print {
+    a[href*="/descargar-pdf"] {
+        display: none !important;
+    }
+}
 </style>
 </head>
 <body>
 <div class="page">
 
   <!-- BLOQUE 1: HEADER -->
-  <div class="bloque">
-    <div class="header">
-      <div class="header-logo">
-        <img src="{{ asset('atomik.png') }}" alt="Atomik logo" style="width:100px;">
-      </div>
-      <div class="header-center">
-        <div class="doc-label">KuDE de Factura electrónica</div>
-        <div class="company">{{ $nombre_empresa }}</div>
-        <div class="info">
-         {{ $actividad_empresa }}<br>
+<div class="bloque">
+  <div class="header">
+    <div class="header-logo">
+      <img src="{{ $logo_base64 }}" alt="Logo" style="width:100px;">
+    </div>
+    <div class="header-center">
+      <div class="doc-label">KuDE de Factura electrónica</div>
+      <div class="company">{{ $nombre_empresa }}</div>
+      <div class="info">
+        {{ $actividad_empresa }}<br>
         {{ $direccion_empresa }}<br><br>
         {{ $ciudad_empresa }}<br>
         {{ $email_empresa }} &nbsp; {{ $telefono_empresa }}
-        </div>
-      </div>
-      <div class="header-right">
-        <div><b>RUC:</b> {{ $ruc_empresa }}</div>
-        <div><b>Timbrado N°:</b> {{ $num_timbrado }}</div>
-        <div><b>Inicio de vigencia:</b> 30-10-2024</div>
-        <div class="doc-tipo">Factura electrónica</div>
-        <div class="doc-num"><b>N°:</b> {{ $num_factura }}</div>
       </div>
     </div>
+    <div class="header-right">
+      <div><b>RUC:</b> {{ $ruc_empresa }}</div>
+      <div><b>Timbrado N°:</b> {{ $num_timbrado }}</div>
+      <div><b>Inicio de vigencia:</b> {{ $fecha_inicio_vigencia }}</div>
+      <div class="doc-tipo">{{ $tipo_documento }}</div>
+      <div class="doc-num"><b>N°:</b> {{ $num_factura }}</div>
+    </div>
   </div>
+</div>
 
   <!-- BLOQUE 2: RECEPTOR -->
   <div class="bloque">
     <div class="receptor">
-      <div class="col-left"><b>Fecha de emisión:</b> {{ $fecha_emision }}</div>
-      <div class="col-right"><b>Condición de venta:</b> {{ $condicion_venta }}</div>
+        <div class="col-left"><b>Fecha de emisión:</b> {{ $fecha_emision }}</div>
+        @if($tipo_documento === 'Factura electrónica')
+            <div class="col-right"><b>Condición de venta:</b> {{ $condicion_venta }}</div>
+        @else
+            <div class="col-right">&nbsp;</div>
+        @endif
 
       <div class="col-left"><b>RUC/documento de identidad:</b> {{ $ruc_receptor }}</div>
-      <div class="col-right"><b>Cuotas:</b> {{ $cuotas }}</div>
+      @if($tipo_documento === 'Factura electrónica')
+        <div class="col-right"><b>Cuotas:</b> {{ $cuotas }}</div>
+      @else
+        <div class="col-right">&nbsp;</div>
+     @endif
 
       <div class="col-left"><b>Código Cliente:</b> {{ $codigo_cliente }}</div>
       <div class="col-right">&nbsp;</div>
@@ -158,7 +172,7 @@ tfoot .tr { text-align: right; }
       <div class="col-right"><b>Correo electrónico:</b> {{ $email }}</div>
 
       <div class="col-left">&nbsp;</div>
-      <div class="col-right" style="padding-bottom:4px;"><b>Tipo de cambio:</b> {{ $tipo_cambio }}</div>
+      <div class="col-right" style="padding-bottom:4px;"><b>Tipo de cambio:</b> <span data-number="{{ $tipo_cambio }}">{{ $tipo_cambio }}</span></div>
     </div>
   </div>
 
@@ -215,29 +229,90 @@ tfoot .tr { text-align: right; }
 
       <tfoot>
         <tr class="sub">
-          <td colspan="6" class="fw">SUBTOTAL</td>
-          <td class="tr">0</td>
-          <td class="tr">0</td>
-          <td class="tr">{{ $subtotal }}</td>
+            <td colspan="6" class="fw">SUBTOTAL</td>
+            <td class="tr">0</td>
+            <td class="tr">0</td>
+            <td class="tr" data-number="{{ $subtotal }}">{{ $subtotal }}</td>
         </tr>
         <tr class="sub">
-          <td colspan="8" class="fw">TOTAL DE LA OPERACIÓN</td>
-          <td class="tr">{{ $total_operacion }}</td>
+            <td colspan="8" class="fw">TOTAL DE LA OPERACIÓN</td>
+            <td class="tr" data-number="{{ $total_operacion }}">{{ $total_operacion }}</td>
         </tr>
         <tr class="guar">
-          <td colspan="8" class="fw">TOTAL EN GUARANÍES</td>
-          <td class="tr">{{ $total_guaranies }}</td>
+            <td colspan="8" class="fw">TOTAL EN GUARANÍES</td>
+            <td class="tr" data-number="{{ $total_guaranies }}">{{ $total_guaranies }}</td>
         </tr>
         <tr class="iva">
-          <td colspan="3" class="fw">LIQUIDACIÓN IVA</td>
-          <td colspan="2">(5%) &nbsp; {{ $iva_cinco }}</td>
-          <td colspan="2">(10%) &nbsp; {{ $iva_diez }}</td>
-          <td colspan="2" class="fw">TOTAL IVA: &nbsp; {{ $total_iva }}</td>
+            <td colspan="3" class="fw">LIQUIDACIÓN IVA</td>
+            <td colspan="2">(5%) &nbsp; <span data-number="{{ $iva_cinco }}">{{ $iva_cinco }}</span></td>
+            <td colspan="2">(10%) &nbsp; <span data-number="{{ $iva_diez }}">{{ $iva_diez }}</span></td>
+            <td colspan="2" class="fw">TOTAL IVA: &nbsp; <span data-number="{{ $total_iva }}">{{ $total_iva }}</span></td>
         </tr>
         <tr class="info">
-          <td colspan="9">Info fiscal</td>
+            <td colspan="9">Info fiscal</td>
         </tr>
-      </tfoot>
+        </tfoot>
+
+    <script>
+function formatNumberPY(value) {
+  if (!value || value == 0) return '0';
+
+  const num = parseFloat(value);
+
+  // Si es entero, sin decimales
+  if (Number.isInteger(num)) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  }
+
+  // Si tiene decimales
+  const parts = num.toFixed(2).split('.');
+  const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+  // Si el segundo decimal es 0, mostrar solo 1 decimal
+  if (parts[1] === '00') {
+    return integerPart;
+  }
+  if (parts[1].endsWith('0') && parts[1] !== '00') {
+    return integerPart + ',' + parts[1].substring(0, 1);
+  }
+
+  return integerPart + ',' + parts[1];
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Formatear todos los números con data-number
+  document.querySelectorAll('[data-number]').forEach(el => {
+    el.textContent = formatNumberPY(el.getAttribute('data-number'));
+  });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const facturaParts = window.location.pathname.split('/');
+    const facturaId = facturaParts[facturaParts.length - 2];
+
+    const btn = document.createElement('a');
+    btn.href = `/api/facturas/${facturaId}/descargar-pdf`;
+    btn.textContent = '📥 Descargar PDF';
+    btn.className = 'btn-descargar';
+    btn.style.cssText = 'position: fixed; bottom: 20px; right: 20px; padding: 10px 15px; background: #007bff; color: white; border-radius: 5px; text-decoration: none; z-index: 1000;';
+    document.body.appendChild(btn);
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Solo mostrar botón si NO estamos descargando (si no está en iframe o es visualización)
+    if (window.self === window.top) {
+        const facturaId = {{ $factura_id ?? 0 }};
+
+        const btn = document.createElement('a');
+        btn.href = `/api/facturas/${facturaId}/descargar-pdf`;
+        btn.textContent = '📥 Descargar PDF';
+        btn.className = 'btn-descargar';
+        btn.style.cssText = 'position: fixed; bottom: 20px; right: 20px; padding: 10px 15px; background: #007bff; color: white; border-radius: 5px; text-decoration: none; z-index: 1000; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);';
+        btn.target = '_self';
+        document.body.appendChild(btn);
+    }
+});
+</script>
 
     </table>
   </div>
