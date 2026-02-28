@@ -1,8 +1,8 @@
 FROM php:8.1-fpm-alpine
 
-# Instalar solo lo esencial
+# Instalar dependencias
 RUN apk add --no-cache \
-    build-base \
+    libpq \
     postgresql-dev \
     libzip-dev \
     zip \
@@ -14,8 +14,7 @@ RUN apk add --no-cache \
     bash
 
 # Instalar extensiones PHP
-RUN docker-php-ext-install \
-    pdo \
+RUN docker-php-ext-install -j$(nproc) \
     pdo_pgsql \
     zip \
     bcmath \
@@ -26,23 +25,18 @@ RUN docker-php-ext-install \
 # Instalar Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Copiar proyecto
 WORKDIR /app
 COPY . .
 
-# Instalar dependencias
-RUN composer install --no-dev --optimize-autoloader --no-interaction 2>&1 || true
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-# Crear directorios
 RUN mkdir -p storage/logs storage/framework/cache storage/framework/sessions storage/framework/views \
     && chmod -R 775 storage bootstrap/cache
 
-# Copiar configuraciones
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY default.conf /etc/nginx/conf.d/default.conf
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Crear logs
 RUN mkdir -p /var/log/supervisor
 
 EXPOSE 10000
