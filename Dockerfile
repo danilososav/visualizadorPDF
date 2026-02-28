@@ -1,8 +1,7 @@
-FROM php:8.1-fpm-alpine
+FROM php:8.1-fpm
 
-RUN apk add --no-cache \
-    libpq \
-    postgresql-dev \
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
     libzip-dev \
     zip \
     unzip \
@@ -10,13 +9,14 @@ RUN apk add --no-cache \
     curl \
     nginx \
     supervisor \
-    bash
+    && rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-install -j$(nproc) \
     pdo_pgsql \
     zip \
     bcmath \
     ctype \
+    mbstring \
     tokenizer
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
