@@ -1,6 +1,5 @@
 FROM php:8.1-fpm-alpine
 
-# Instalar dependencias
 RUN apk add --no-cache \
     libpq \
     postgresql-dev \
@@ -13,16 +12,13 @@ RUN apk add --no-cache \
     supervisor \
     bash
 
-# Instalar extensiones PHP
 RUN docker-php-ext-install -j$(nproc) \
     pdo_pgsql \
     zip \
     bcmath \
     ctype \
-    mbstring \
     tokenizer
 
-# Instalar Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
